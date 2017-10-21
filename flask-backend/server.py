@@ -11,8 +11,11 @@ def hello():
 
 @app.route("/api/post/<post_id>")
 def get_post(post_id):
-    return 'hi'
-    #return database.get_post(post_id)
+    post_info = database.get_post(post_id)
+    product_info = database.get_product(post_id)
+    image_info = database.get_image(post_id)
+    return "test"
+
 
 @app.route("/api/post/recommendations")
 def get_recommendations():
@@ -22,8 +25,7 @@ def get_recommendations():
 
 @app.route("/api/curator/<curator_id>/posts")
 def get_curator_posts(curator_id):
-    return "hi"
-    #return database.get_curator_posts(curator_id)
+    return database.get_curator_posts(curator_id)
 
 @app.route("/api/post/create", methods=['POST'])
 def create_post():
@@ -41,4 +43,4 @@ def create_post():
     image_name = body["image_name"]
     
     return 'hi'
-    #return database.create_post(curator, date, title, desc, in_stock, sizes, product_link, product_name, image_link, image_name)
+    return database.create_post(curator, date, title, desc, in_stock, sizes, product_link, product_name, image_link, image_name)

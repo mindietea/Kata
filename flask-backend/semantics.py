@@ -2,15 +2,15 @@ from semantics3 import Products
 import keys
 import json
 
-def recommendation_data(name, brand):
+def get_recommendations(name, brand):
     k = keys.Keys()
     sem3 = Products(
         api_key = k.get_semantics_api_key(),
         api_secret = k.get_semantics_secret_key()
     )
 
-    sem3.products_field("search", "iphone")
-    sem3.products_field("brand", "apple")
+    sem3.products_field("search", name)
+    sem3.products_field("brand", brand)
     sem3.products_field("limit", 10)
     results = sem3.get()
 
@@ -29,5 +29,4 @@ def recommendation_data(name, brand):
         data['brand'] = r['brand']
         data['name'] = r['name']
         output.append(data)
-        print(data)
-    return output
+    return {"results": output}

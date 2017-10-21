@@ -115,4 +115,3 @@ def createPost(curator, date, title, description, inStock,sizes, productLink, pr
 		productCursor = productConnection.cursor()
 		productCursor.execute("INSERT INTO products (PostID, ProductLink, ProductName) VALUES (%s, %s, %s)", (currentID, productLink, productName))
 		productConnection.commit()
-createPost(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)

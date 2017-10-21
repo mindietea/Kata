@@ -31,5 +31,3 @@ def recommendation_data(name, brand):
         output.append(data)
         print(data)
     return output
-
-recommendation_data("macbook", "apple")

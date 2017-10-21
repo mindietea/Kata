@@ -16,7 +16,7 @@ connection.connect(function(err) {
   }
 
   console.log('Connected to database.');
-  var query = "CREATE DATABASE ImageDB"
+  var query = "CREATE DATABASE ProductDB"
   console.log("running query \"" + query + "\"...");
   connection.query(query);
   connection.end()

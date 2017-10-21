@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
   user     : process.env.USER,
   password : process.env.PASSWORD,
   port     : process.env.PORT,
-  database : "ImageDB"
+  database : process.env.DATABASE,
 });
 
 connection.connect(function(err) {
@@ -17,7 +17,7 @@ connection.connect(function(err) {
   }
 
   console.log('Connected to database.');
-  var query = "SELECT * FROM images"
+  var query = "SELECT * FROM products"
   console.log("running query \"" + query + "\"...");
   connection.query(query, function(error, result){
 	  console.log("The result is " + JSON.stringify(result))

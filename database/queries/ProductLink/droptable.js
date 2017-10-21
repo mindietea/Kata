@@ -17,7 +17,7 @@ connection.connect(function(err) {
   }
 
   console.log('Connected to database.');
-  var query = "DROP TABLE images"
+  var query = "DROP TABLE products"
   console.log("running query \"" + query + "\"...");
   connection.query(query);
   connection.end()

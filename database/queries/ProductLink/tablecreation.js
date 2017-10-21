@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
   user     : process.env.USER,
   password : process.env.PASSWORD,
   port     : process.env.PORT,
-  database : "ImageDB"
+  database : process.env.DATABASE,
 });
 
 connection.connect(function(err) {
@@ -17,7 +17,7 @@ connection.connect(function(err) {
   }
 
   console.log('Connected to database.');
-  var query = "CREATE TABLE images (PostID int, ImageLink varchar(255), ImageName varchar(255));"
+  var query = "CREATE TABLE products (PostID int, ProductLink varchar(255), ProductName varchar(255));"
   console.log("running query \"" + query + "\"...");
   connection.query(query);
   connection.end()

@@ -7,7 +7,7 @@ var connection = mysql.createConnection({
   user     : process.env.USER,
   password : process.env.PASSWORD,
   port     : process.env.PORT,
-  database : "ImageDB"
+  database : process.env.DATABASE,
 });
 
 connection.connect(function(err) {
@@ -18,6 +18,6 @@ connection.connect(function(err) {
   }
 
   console.log('Connected to database.');
-  connection.query("INSERT INTO images (PostId, ImageLink, ImageName) VALUES ?", [[[1, "HI I MINDY", "POTATO"], [2, "HI I MINDU", "POTATOS"]]]);
+  connection.query("INSERT INTO products (PostId, ProductLink, ProductName) VALUES ?", [[[1, "HI I MINDY", "POTATO"], [2, "HI I MINDU", "POTATOS"]]]);
   connection.end()
 });

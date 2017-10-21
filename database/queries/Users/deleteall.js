@@ -17,7 +17,7 @@ connection.connect(function(err) {
   }
 
   console.log('Connected to database.');
-  var query = "DROP TABLE products"
+  var query = "DELETE FROM PostsDB"
   console.log("running query \"" + query + "\"...");
   connection.query(query);
   connection.end()

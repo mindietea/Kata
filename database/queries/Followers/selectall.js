@@ -17,8 +17,10 @@ connection.connect(function(err) {
   }
 
   console.log('Connected to database.');
-  var query = "DROP TABLE products"
+  var query = "SELECT * FROM posts"
   console.log("running query \"" + query + "\"...");
-  connection.query(query);
+  connection.query(query, function(error, result){
+	  console.log("The result is " + JSON.stringify(result))
+  });
   connection.end()
 });

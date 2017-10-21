@@ -17,7 +17,7 @@ connection.connect(function(err) {
   }
 
   console.log('Connected to database.');
-  var query = "DROP TABLE products"
+  var query = "CREATE TABLE posts (PostID int NOT NULL AUTO_INCREMENT, Curator varchar(255), Date varchar(255), Title varchar(255), Description varchar(10000), InStock ENUM('false', 'true'), sizes varchar(500), PRIMARY KEY (PostID));"
   console.log("running query \"" + query + "\"...");
   connection.query(query);
   connection.end()

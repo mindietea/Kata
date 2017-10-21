@@ -1,3 +1,4 @@
+'use strict';
 var mysql = require('mysql');
 require('dotenv').load();
 
@@ -17,8 +18,6 @@ connection.connect(function(err) {
   }
 
   console.log('Connected to database.');
-  var query = "DROP TABLE products"
-  console.log("running query \"" + query + "\"...");
-  connection.query(query);
+  connection.query("INSERT INTO posts (Curator, Date, Title, Description, InStock, sizes) VALUES ?", [[["Curator", "Date", "Title", "Description", "InStock", "sizes"], ["Curator", "Date", "Title", "Description", "InStock", "sizes"]]]);
   connection.end()
 });

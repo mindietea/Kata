@@ -1,0 +1,4 @@
+semantics3
+flask
+requests-oauthlib
+requests

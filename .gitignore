@@ -5,4 +5,5 @@ flask-backend/*.swp
 flask-backend/__pycache__
 env/
 kata-ui/
-
+env/
+.DS_Store

@@ -19,6 +19,24 @@ def get_curator_posts(curator):
 		result = cursor.fetchall()
 		return json.dumps(result)
 
+def get_curator_post_ids(curator):
+	connection = pymysql.connect(host=str(os.environ.get("HOST")),
+	                             user=str(os.environ.get("USER")),
+	                             password=str(os.environ.get("PASSWORD")),
+								 port=int(os.environ.get("PORT")),
+								 database=str(os.environ.get('POSTS_DATABASE')),
+	                             charset='utf8mb4',
+	                             cursorclass=pymysql.cursors.DictCursor)
+	with connection.cursor() as cursor:
+		cursor.execute("SELECT * FROM posts WHERE curator = %s", str(curator))
+		connection.commit()
+		result = cursor.fetchall()
+		idArr = []
+		for i in range(0,len(result)):
+			idArr.append(result[i]['PostID'])
+		return idArr
+
+
 def get_all_posts():
 	connection = pymysql.connect(host=str(os.environ.get("HOST")),
 	                             user=str(os.environ.get("USER")),
@@ -43,7 +61,7 @@ def get_post(postID):
 	                             charset='utf8mb4',
 	                             cursorclass=pymysql.cursors.DictCursor)
 	with connection.cursor() as cursor:
-		cursor.execute("SELECT * FROM posts WHERE POSTID= %s",str(postID))
+		cursor.execute("SELECT * FROM posts WHERE PostID= %s",str(postID))
 		connection.commit()
 		result = cursor.fetchall()
 		connection.close()

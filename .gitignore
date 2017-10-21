@@ -3,3 +3,4 @@ node_modules/
 flask-backend/keys.py
 flask-backend/*.swp
 env/
+.DS_Store

@@ -10,6 +10,7 @@ sem3 = Products(
 
 sem3.products_field("search", "iphone")
 sem3.products_field("brand", "apple")
+sem3.products_field("variation_includeall", 0)
 sem3.products_field("limit", 7)
 results = sem3.get()
 

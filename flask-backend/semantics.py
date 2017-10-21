@@ -11,7 +11,8 @@ def get_recommendations(name, brand):
 
     sem3.products_field("search", name)
     sem3.products_field("brand", brand)
-    sem3.products_field("limit", 10)
+    sem3.products_field("variation_includeall", 0)
+    sem3.products_field("limit", 7)
     results = sem3.get()
 
     output = []

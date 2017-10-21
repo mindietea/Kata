@@ -6,7 +6,6 @@ var connection = mysql.createConnection({
   user     : process.env.USER,
   password : process.env.PASSWORD,
   port     : process.env.PORT,
-  database : process.env.DATABASE,
 });
 
 connection.connect(function(err) {
@@ -17,7 +16,7 @@ connection.connect(function(err) {
   }
 
   console.log('Connected to database.');
-  var query = "DELETE FROM PostsDB"
+  var query = "CREATE DATABASE FollowersDB"
   console.log("running query \"" + query + "\"...");
   connection.query(query);
   connection.end()

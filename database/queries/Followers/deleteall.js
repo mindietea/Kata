@@ -17,7 +17,7 @@ connection.connect(function(err) {
   }
 
   console.log('Connected to database.');
-  var query = "DELETE FROM PostsDB"
+  var query = "DELETE FROM followers"
   console.log("running query \"" + query + "\"...");
   connection.query(query);
   connection.end()

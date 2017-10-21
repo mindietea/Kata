@@ -17,7 +17,7 @@ connection.connect(function(err) {
   }
 
   console.log('Connected to database.');
-  var query = "SELECT * FROM posts"
+  var query = "SELECT * FROM followers"
   console.log("running query \"" + query + "\"...");
   connection.query(query, function(error, result){
 	  console.log("The result is " + JSON.stringify(result))

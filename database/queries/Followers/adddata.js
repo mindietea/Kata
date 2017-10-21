@@ -18,6 +18,6 @@ connection.connect(function(err) {
   }
 
   console.log('Connected to database.');
-  connection.query("INSERT INTO posts (Curator, Date, Title, Description, InStock, sizes) VALUES ?", [[["Curator", "Date", "Title", "Description", "InStock", "sizes"], ["Curator", "Date", "Title", "Description", "InStock", "sizes"]]]);
+  connection.query("INSERT INTO followers (User, Follower) VALUES ?", [[["William", "David"], ["David", "William"]]]);
   connection.end()
 });

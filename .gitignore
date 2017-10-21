@@ -1,4 +1,4 @@
 node_modules/
 .env
-flask-backend/*.swp
 flask-backend/keys.py
+flask-backend/*.swp

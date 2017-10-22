@@ -27,12 +27,13 @@ def get_recommendations(name, brand=None):
     for r in results["results"]:
         data = {}
         data['image'] = r["images"][0]
-        data['url'] = r['sitedetails'][0]["url"]
+        data['link'] = r['sitedetails'][0]["url"]
         try:
             data['price'] = r['sitedetails'][0]["latestoffers"][0]["price"]
             data['brand'] = r['brand']
         except:
             pass        
-        data['name'] = r['name']
+        data['title'] = r['name']
+        data['status'] = True
         output.append(data)
     return {"results": output}

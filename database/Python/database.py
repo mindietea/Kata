@@ -33,6 +33,7 @@ def format_curator(curator):
 		productCursor = productConnection.cursor()
 		imageCursor = imageConnection.cursor()
 		product = []
+		counter = 0
 		for i in result:
 			items = {}
 			productCursor.execute("SELECT ProductLink,ProductName, InStock FROM products WHERE PostID = %s", str(i["PostID"]))
@@ -45,12 +46,14 @@ def format_curator(curator):
 				items['title'] = productresult[i]['ProductName']
 				items['status'] = productresult[i]['InStock']
 			product.append(items)
-		result[0]['product'] = product
-		result[0]['description'] = result[0].pop('Description')
-		result[0]['curator'] = result[0].pop('Curator')
-		result[0]['title'] = result[0].pop('Title')
-		result[0].pop('PostID')
-		return result[0]
+			result[counter]['products'] = product
+			result[counter]['description'] = result[counter].pop('Description')
+			result[counter]['curator'] = result[counter].pop('Curator')
+			result[counter]['title'] = result[counter].pop('Title')
+			result[counter].pop('PostID')
+			counter += 1
+
+		return result
 
 def get_curator_posts(curator):
 	connection = pymysql.connect(host=str(os.environ.get("HOST")),

@@ -26,11 +26,17 @@ def get_recommendations(name, brand=None):
 
     for r in results["results"]:
         data = {}
-        data['image'] = r["images"][0]
+        try:
+            data['image'] = r["images"][0]
+        except:
+            pass
         data['url'] = r['sitedetails'][0]["url"]
 
         try:
             data['price'] = r['sitedetails'][0]["latestoffers"][0]["price"]
+        except:
+            pass
+        try:
             data['brand'] = r['brand']
         except:
             pass

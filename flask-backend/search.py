@@ -1,5 +1,5 @@
 from flask import jsonify
-from google.cloud import language
+from google.cloud import language, storage
 from google.cloud.language import enums
 from google.cloud.language import types
 import http.client
@@ -8,8 +8,6 @@ import ast
 import semantics
 
 def implicit():
-    from google.cloud import storage
-
     # If you don't specify credentials when constructing the client, the
     # client library will look for credentials in the environment.
     storage_client = storage.Client()
@@ -49,6 +47,4 @@ def search_backend(text):
     res_list = ast.literal_eval(response.text)
     #rec = semantics.get_recommendations(text)
     #output = res_list + rec['results']
-    print(res_list)
-   
-search_by_product_name("iPhone")
+    return res_list   

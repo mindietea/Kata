@@ -7,6 +7,7 @@ import requests
 import json
 import database
 import flask
+import vision_recognition
 app = Flask(__name__)
 import semantics
 
@@ -35,8 +36,17 @@ def get_recommendations_ghome():
 @app.route("/api/post/recommendations")
 def get_recommendations():
     product_name = request.args.get("name")
-    product_brand = request.args.get("brand")
+    try:
+        product_brand = request.args.get("brand")
+    except:
+        return json.dumps(semantics.get_recommendations(product_name))
+
     return json.dumps(semantics.get_recommendations(product_name, product_brand))
+
+@app.route("/api/post/vision")
+def get_vision_results():
+    image_url = request.args.get("url")
+    return json.dumps(vision_recognition.custom_vision_endpoint(image_url))
 
 @app.route("/api/curator/<curator_id>/posts")
 def get_curator_posts(curator_id):

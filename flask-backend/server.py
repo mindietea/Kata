@@ -53,7 +53,7 @@ def get_following_curators(curator_id):
 def get_feed(curator_id):
     following = database.get_influencers(curator_id)
     feed = []
-    for curator in following:
+    for curator in following[0]:
         post_ids = database.get_curator_post_ids(curator["User"])
         for post_id in post_ids:
             feed.append(get_post(post_id))

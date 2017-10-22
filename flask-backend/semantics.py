@@ -38,5 +38,3 @@ def get_recommendations(name, brand=None):
         output.append(data)
     return {"results": output}
 
-def get_one_recommendation():
-    return 'test'

@@ -133,3 +133,41 @@ def create_post(curator, date, title, description, inStock,sizes, productLink, p
 		productCursor = productConnection.cursor()
 		productCursor.execute("INSERT INTO products (PostID, ProductLink, ProductName) VALUES (%s, %s, %s)", (currentID, productLink, productName))
 		productConnection.commit()
+
+
+def create_post_array(curator, date, title, description, product):
+	postConnection = pymysql.connect(host=str(os.environ.get("HOST")),
+	                             user=str(os.environ.get("USER")),
+	                             password=str(os.environ.get("PASSWORD")),
+								 port=int(os.environ.get("PORT")),
+								 database=str(os.environ.get('POSTS_DATABASE')),
+	                             charset='utf8mb4',
+	                             cursorclass=pymysql.cursors.DictCursor)
+	imageConnection = pymysql.connect(host=str(os.environ.get("HOST")),
+	                             user=str(os.environ.get("USER")),
+	                             password=str(os.environ.get("PASSWORD")),
+								 port=int(os.environ.get("PORT")),
+								 database=str(os.environ.get('IMAGE_DATABASE')),
+	                             charset='utf8mb4',
+	                             cursorclass=pymysql.cursors.DictCursor)
+	productConnection = pymysql.connect(host=str(os.environ.get("HOST")),
+	                             user=str(os.environ.get("USER")),
+	                             password=str(os.environ.get("PASSWORD")),
+								 port=int(os.environ.get("PORT")),
+								 database=str(os.environ.get('PRODUCT_DATABASE')),
+	                             charset='utf8mb4',
+	                             cursorclass=pymysql.cursors.DictCursor)
+	with postConnection.cursor() as cursor:
+		cursor.execute("INSERT INTO posts (Curator, Date, Title, Description, InStock, sizes) VALUES  (%s, %s, %s, %s, %s, %s);", (curator, date, title, description, inStock, sizes))
+		postConnection.commit()
+		cursor.execute("SELECT * FROM posts WHERE curator = %s;", curator);
+		postConnection.commit()
+		result = cursor.fetchall()
+		currentID = int(result[len(result) - 1].get('PostID'))
+		imageCursor = imageConnection.cursor()
+		productCursor = productConnection.cursor()
+		for i in product:
+			imageCursor.execute("INSERT INTO images (PostID, ImageLink, ImageName, InStock) VALUES (%s, %s, %s, %s)", (currentID, product[i]['image'], product[i]['title'], product[i]['status']))
+			productCursor.execute("INSERT INTO products (PostID, ProductLink, ProductName) VALUES (%s, %s, %s)", (currentID, product[i][link], product[i]['title']))
+		imageConnection.commit()
+		productConnection.commit()

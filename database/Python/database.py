@@ -209,7 +209,7 @@ def search_products(product_substring):
 		productConnection.close()
 		imageCursor = imageConnection.cursor()
 		for i in result:
-			imageCursor.execute("SELECT ImageLink FROM images WHERE PostID = %s", str(i["PostID"]));
+			imageCursor.execute("SELECT ImageLink FROM images WHERE PostID = %s", str(i["PostID"]))
 			imageConnection.commit()
 			imageresult = imageCursor.fetchall()
 			i['ImageLink'] = imageresult[0]['ImageLink']
@@ -250,7 +250,6 @@ def create_post(curator, date, title, description, inStock,sizes, productLink, p
 		productCursor = productConnection.cursor()
 		productCursor.execute("INSERT INTO products (PostID, ProductLink, ProductName, InStock) VALUES (%s, %s, %s, %s)", (currentID, productLink, productName, inStock))
 		productConnection.commit()
-
 
 def create_post_array(curator, date, title, description, product):
 	postConnection = pymysql.connect(host=str(os.environ.get("HOST")),

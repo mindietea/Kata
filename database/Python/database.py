@@ -3,6 +3,7 @@ import os
 load_dotenv(find_dotenv())
 import pymysql
 import json
+from  more_itertools import unique_everseen
 
 def format_curator(curator):
 	connection = pymysql.connect(host=str(os.environ.get("HOST")),
@@ -32,27 +33,32 @@ def format_curator(curator):
 		result = cursor.fetchall()
 		productCursor = productConnection.cursor()
 		imageCursor = imageConnection.cursor()
-		product = []
 		counter = 0
+		print result
 		for i in result:
-			items = {}
+			product = []
+			productresult = None;
+			imageresult = None;
 			productCursor.execute("SELECT ProductLink,ProductName, InStock FROM products WHERE PostID = %s", str(i["PostID"]))
 			productresult = productCursor.fetchall()
+			print productresult
 			imageCursor.execute("SELECT ImageLink FROM images WHERE PostID = %s", str(i["PostID"]))
 			imageresult = imageCursor.fetchall()
+			print len(productresult)
 			for i in range(0, len(productresult)):
+				items = {}
 				items['image'] = imageresult[i]['ImageLink']
 				items['link'] = productresult[i]['ProductLink']
 				items['title'] = productresult[i]['ProductName']
 				items['status'] = productresult[i]['InStock']
-			product.append(items)
+				product.append(items)
 			result[counter]['products'] = product
 			result[counter]['description'] = result[counter].pop('Description')
 			result[counter]['curator'] = result[counter].pop('Curator')
 			result[counter]['title'] = result[counter].pop('Title')
 			result[counter].pop('PostID')
-			counter += 1
-
+			counter = counter + 1
+		print(json.dumps(result))
 		return result
 
 def get_curator_posts(curator):
@@ -254,7 +260,7 @@ def create_post(curator, date, title, description, inStock,sizes, productLink, p
 		productCursor.execute("INSERT INTO products (PostID, ProductLink, ProductName, InStock) VALUES (%s, %s, %s, %s)", (currentID, productLink, productName, inStock))
 		productConnection.commit()
 
-def create_post_array(curator, date, title, description, product):
+def create_post_array(curator, title, description, product):
 	postConnection = pymysql.connect(host=str(os.environ.get("HOST")),
 	                             user=str(os.environ.get("USER")),
 	                             password=str(os.environ.get("PASSWORD")),
@@ -277,7 +283,7 @@ def create_post_array(curator, date, title, description, product):
 	                             charset='utf8mb4',
 	                             cursorclass=pymysql.cursors.DictCursor)
 	with postConnection.cursor() as cursor:
-		cursor.execute("INSERT INTO posts (Curator, Date, Title, Description) VALUES  (%s, %s, %s, %s);", (curator, date, title, description))
+		cursor.execute("INSERT INTO posts (Curator, Title, Description) VALUES  (%s, %s, %s);", (curator, title, description))
 		postConnection.commit()
 		cursor.execute("SELECT * FROM posts WHERE curator = %s;", curator);
 		postConnection.commit()
@@ -285,7 +291,7 @@ def create_post_array(curator, date, title, description, product):
 		currentID = int(result[len(result) - 1].get('PostID'))
 		imageCursor = imageConnection.cursor()
 		productCursor = productConnection.cursor()
-		print(product)
+		print(json.dumps(product))
 		for i in product:
 			imageCursor.execute("INSERT INTO images (PostID, ImageLink, ImageName) VALUES (%s, %s, %s)", (currentID, i['image'], i['title']))
 			productCursor.execute("INSERT INTO products (PostID, ProductLink, ProductName, InStock) VALUES (%s, %s, %s, %s)", (currentID, i['link'], i['title'], i['status']))

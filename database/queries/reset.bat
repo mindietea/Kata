@@ -1,0 +1,9 @@
+cd ProductLink;
+node droptable.js
+node tablecreation.js
+cd ../images
+node droptable.js
+node tablecreation.js
+cd ../Posts
+node droptable.js
+node tablecreation.js

@@ -12,7 +12,7 @@ exports.kata = (req, res) => {
 	  app.ask("Welcome to Kata, Please say anything you'd like to buy.")
   }
   function inputIntent(app){
-	  app.tell(" " + String(app.data.tell))
+	  app.tell("I LIKE PANCAKE")
 	  var options = { method: 'GET',
     	url: 'http://6197757d.ngrok.io/api/post/recommendations/ghome?name=' + encodeURI(String(app.data.input))};
   	request(options, function (error, response, body) {

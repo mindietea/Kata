@@ -17,7 +17,7 @@ connection.connect(function(err) {
   }
 
   console.log('Connected to database.');
-  var query = "CREATE TABLE posts (PostID int NOT NULL AUTO_INCREMENT, Curator varchar(255), Date varchar(255), Title varchar(255), Description varchar(10000), PRIMARY KEY (PostID));"
+  var query = "CREATE TABLE posts (PostID int NOT NULL AUTO_INCREMENT, Curator varchar(255), Date varchar(255), Title varchar(255), Description varchar(10000), PRIMARY KEY(PostID, Title));"
   console.log("running query \"" + query + "\"...");
   connection.query(query);
   connection.end()

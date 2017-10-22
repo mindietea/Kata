@@ -100,8 +100,9 @@ def getItem():
 
 @app.route("/api/post/create_json", methods=['POST'])
 def create_custom_json():
-    raw_data = request.get_json()
-    database.create_post_array(raw_data['curator'], None, raw_data['title'], raw_data['description'], raw_data['products'])
+    raw_data = json.loads(request.data)
+    print request.data
+    database.create_post_array(raw_data['curator'], raw_data['title'], raw_data['description'], raw_data['products'])
     return(json.dumps({"status": 200}))
 
 @app.route("/api/post/add_follower", methods=['POST'])

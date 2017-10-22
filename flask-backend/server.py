@@ -1,7 +1,11 @@
+import sys
+
+sys.path.append("../database/Python")
+
 from flask import Flask, jsonify, request, redirect, render_template
 import requests
 import json
-#import database
+import database
 import semantics
 app = Flask(__name__)
 
@@ -29,7 +33,7 @@ def get_curator_posts(curator_id):
 
 @app.route("/api/post/create", methods=['POST'])
 def create_post():
-    body = request.get_json()
+    body = request.get_json(force=True)
 
     curator = body["curator"]
     date = body["date"]
@@ -41,6 +45,5 @@ def create_post():
     product_name = body["product_name"]
     image_link = body["image"]
     image_name = body["image_name"]
-    
-    return 'hi'
+
     return database.create_post(curator, date, title, desc, in_stock, sizes, product_link, product_name, image_link, image_name)

@@ -151,7 +151,7 @@ def create_post(curator, date, title, description, inStock,sizes, productLink, p
 	                             charset='utf8mb4',
 	                             cursorclass=pymysql.cursors.DictCursor)
 	with postConnection.cursor() as cursor:
-		cursor.execute("INSERT INTO posts (Curator, Date, Title, Description, ) VALUES  (%s, %s, %s, %s);", (curator, date, title, description))
+		cursor.execute("INSERT INTO posts (Curator, Date, Title, Description ) VALUES  (%s, %s, %s, %s);", (curator, date, title, description))
 		postConnection.commit()
 		cursor.execute("SELECT * FROM posts WHERE curator = %s;", curator);
 		postConnection.commit()

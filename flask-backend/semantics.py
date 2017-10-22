@@ -1,8 +1,8 @@
-from semantics3 import Products
+from semantics3 import Products, Categories
 import keys
 import json
 
-def get_recommendations(name, brand):
+def get_recommendations(name, brand=None):
     k = keys.Keys()
 
     categories = Categories(
@@ -15,12 +15,11 @@ def get_recommendations(name, brand):
         api_secret = k.get_semantics_secret_key()
     )
 
-    categories
-
     products.products_field("search", name)
-    products.products_field("brand", brand)
+    if brand != None:
+        products.products_field("brand", brand)
     products.products_field("variation_includeall", 0)
-    products.products_field("limit", 7)
+    products.products_field("limit", 10)
     results = products.get()
 
     output = []
@@ -34,7 +33,6 @@ def get_recommendations(name, brand):
             data['price'] = r['sitedetails'][0]["latestoffers"][0]["price"]
         except:
             pass
-        
         data['brand'] = r['brand']
         data['name'] = r['name']
         output.append(data)

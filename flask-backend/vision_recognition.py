@@ -23,6 +23,7 @@ def custom_vision_endpoint(user_image_url):
     response = requests.post(url, data=json.dumps(payload), headers=headers)
     response = response.json()
     # if custom model has high probability rate, return recommendations
+    print(response)
     if response['Predictions'][0]['Probability'] > 0.75:
         val = response['Predictions'][0]['Tag']
         return json.dumps(semantics.get_recommendations(val), False)
@@ -41,8 +42,9 @@ def custom_vision_endpoint(user_image_url):
             return json.dumps(semantics.get_recommendations(val), False)
 
         # otherwise provide the user with choice
-        response = {}
-        response['data'] = []
-        for i in range(5):
-            response['data'].append(concepts[i]['name'])
-        return json.dumps(response, True)
+        output = []
+        for i in range(3):
+            output.append(semantics.get_recommendations(concepts[i]['name']))
+        return json.dumps(output, True)
+
+#custom_vision_endpoint("http://viliflik.files.wordpress.com/2010/10/glasses-best.jpg")

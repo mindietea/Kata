@@ -43,9 +43,9 @@ def get_recommendations():
 
     return json.dumps(semantics.get_recommendations(product_name, product_brand))
 
-@app.route("/api/post/vision")
+@app.route("/api/post/vision", methods=['POST'])
 def get_vision_results():
-    image_url = request.args.get("url")
+    image_url = str(request.form['url'])
     return json.dumps(vision_recognition.custom_vision_endpoint(image_url))
 
 @app.route("/api/curator/<curator_id>/posts")

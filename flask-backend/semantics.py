@@ -25,7 +25,6 @@ def get_recommendations(name, brand=None):
     output = []
 
     for r in results["results"]:
-        print(r)
         data = {}
         data['image'] = r["images"][0]
         data['url'] = r['sitedetails'][0]["url"]

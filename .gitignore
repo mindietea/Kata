@@ -2,5 +2,8 @@ node_modules/
 .env
 flask-backend/keys.py
 flask-backend/*.swp
+flask-backend/__pycache__
+env/
+kata-ui/
 env/
 .DS_Store

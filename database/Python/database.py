@@ -5,7 +5,7 @@ import pymysql
 import json
 
 
-def getAllCurators(curator):
+def get_curator_posts(curator):
 	connection = pymysql.connect(host=str(os.environ.get("HOST")),
 	                             user=str(os.environ.get("USER")),
 	                             password=str(os.environ.get("PASSWORD")),
@@ -19,7 +19,7 @@ def getAllCurators(curator):
 		result = cursor.fetchall()
 		return json.dumps(result)
 
-def getAllCuratorID(curator):
+def get_curator_post_ids(curator):
 	connection = pymysql.connect(host=str(os.environ.get("HOST")),
 	                             user=str(os.environ.get("USER")),
 	                             password=str(os.environ.get("PASSWORD")),
@@ -37,7 +37,7 @@ def getAllCuratorID(curator):
 		return idArr
 
 
-def getAllPosts():
+def get_all_posts():
 	connection = pymysql.connect(host=str(os.environ.get("HOST")),
 	                             user=str(os.environ.get("USER")),
 	                             password=str(os.environ.get("PASSWORD")),
@@ -52,7 +52,7 @@ def getAllPosts():
 		connection.close()
 		return json.dumps(result)
 
-def getPostByID(postID):
+def get_post(postID):
 	connection = pymysql.connect(host=str(os.environ.get("HOST")),
 	                             user=str(os.environ.get("USER")),
 	                             password=str(os.environ.get("PASSWORD")),
@@ -68,7 +68,7 @@ def getPostByID(postID):
 		return json.dumps(result)
 
 
-def getImageByID(postID):
+def get_image(postID):
 	connection = pymysql.connect(host=str(os.environ.get("HOST")),
 	                             user=str(os.environ.get("USER")),
 	                             password=str(os.environ.get("PASSWORD")),
@@ -83,7 +83,7 @@ def getImageByID(postID):
 		connection.close()
 		return json.dumps(result)
 
-def getProductByID(postID):
+def get_product(postID):
 	connection = pymysql.connect(host=str(os.environ.get("HOST")),
 	                             user=str(os.environ.get("USER")),
 	                             password=str(os.environ.get("PASSWORD")),
@@ -98,7 +98,7 @@ def getProductByID(postID):
 		connection.close()
 		return json.dumps(result)
 
-def createPost(curator, date, title, description, inStock,sizes, productLink, productName, imageLink, imageName):
+def create_post(curator, date, title, description, inStock,sizes, productLink, productName, imageLink, imageName):
 	postConnection = pymysql.connect(host=str(os.environ.get("HOST")),
 	                             user=str(os.environ.get("USER")),
 	                             password=str(os.environ.get("PASSWORD")),

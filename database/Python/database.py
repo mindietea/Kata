@@ -209,10 +209,9 @@ def create_post_array(curator, date, title, description, product):
 		currentID = int(result[len(result) - 1].get('PostID'))
 		imageCursor = imageConnection.cursor()
 		productCursor = productConnection.cursor()
+		print(product)
 		for i in product:
-			imageCursor.execute("INSERT INTO images (PostID, ImageLink, ImageName) VALUES (%s, %s, %s)", (currentID, product[i]['image'], product[i]['title']))
-			productCursor.execute("INSERT INTO products (PostID, ProductLink, ProductName, InStock) VALUES (%s, %s, %s, %s)", (currentID, product[i][link], product[i]['title'], product[i]['status']))
+			imageCursor.execute("INSERT INTO images (PostID, ImageLink, ImageName) VALUES (%s, %s, %s)", (currentID, i['image'], i['title']))
+			productCursor.execute("INSERT INTO products (PostID, ProductLink, ProductName, InStock) VALUES (%s, %s, %s, %s)", (currentID, i['link'], i['title'], i['status']))
 		imageConnection.commit()
 		productConnection.commit()
-
-

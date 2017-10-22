@@ -6,8 +6,10 @@ from flask import Flask, jsonify, request, redirect, render_template
 import requests
 import json
 import database
-import semantics
+import flask
 app = Flask(__name__)
+import semantics
+
 
 @app.route("/")
 def hello():
@@ -25,6 +27,11 @@ def get_post(post_id):
     return json.dumps(result[0])
 
 
+@app.route("/api/post/recommendations/ghome")
+def get_recommendations_ghome():
+    product_name = request.args.get("name")
+    return json.dumps(semantics.get_recommendations(product_name, None))
+
 @app.route("/api/post/recommendations")
 def get_recommendations():
     product_name = request.args.get("name")
@@ -33,11 +40,9 @@ def get_recommendations():
 
 @app.route("/api/curator/<curator_id>/posts")
 def get_curator_posts(curator_id):
-    post_ids = database.get_curator_post_ids(curator_id)
-    curator_posts = []
-    for post_id in post_ids:
-        curator_posts.append(json.loads(get_post(post_id)))
-    return json.dumps(curator_posts)
+    response = flask.jsonify(database.format_curator(curator_id))
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 @app.route("/api/curator/<curator_id>/following")
 def get_followed_curators(curator_id):
@@ -77,6 +82,11 @@ def create_post():
     image_name = body["image_name"]
     database.create_post(curator, date, title, desc, in_stock, sizes, product_link, product_name, image_link, image_name)
     return(json.dumps({"status": 200}))
+
+@app.route("/api/post/search", methods=['POST'])
+def getItem():
+	substring = str(request.form['substring'])
+	return database.search_products(substring)
 
 @app.route("/api/post/create_json", methods=['POST'])
 def create_custom_json():

@@ -4,6 +4,53 @@ load_dotenv(find_dotenv())
 import pymysql
 import json
 
+def format_curator(curator):
+	connection = pymysql.connect(host=str(os.environ.get("HOST")),
+	                             user=str(os.environ.get("USER")),
+	                             password=str(os.environ.get("PASSWORD")),
+								 port=int(os.environ.get("PORT")),
+								 database=str(os.environ.get('POSTS_DATABASE')),
+	                             charset='utf8mb4',
+	                             cursorclass=pymysql.cursors.DictCursor)
+	productConnection = pymysql.connect(host=str(os.environ.get("HOST")),
+	                             user=str(os.environ.get("USER")),
+	                             password=str(os.environ.get("PASSWORD")),
+								 port=int(os.environ.get("PORT")),
+								 database=str(os.environ.get('PRODUCT_DATABASE')),
+	                             charset='utf8mb4',
+	                             cursorclass=pymysql.cursors.DictCursor)
+	imageConnection = pymysql.connect(host=str(os.environ.get("HOST")),
+	                             user=str(os.environ.get("USER")),
+	                             password=str(os.environ.get("PASSWORD")),
+								 port=int(os.environ.get("PORT")),
+								 database=str(os.environ.get('IMAGE_DATABASE')),
+	                             charset='utf8mb4',
+	                             cursorclass=pymysql.cursors.DictCursor)
+	with connection.cursor() as cursor:
+		cursor.execute("SELECT PostID, Curator, Title, Description FROM posts WHERE curator = %s", str(curator))
+		connection.commit()
+		result = cursor.fetchall()
+		productCursor = productConnection.cursor()
+		imageCursor = imageConnection.cursor()
+		product = []
+		for i in result:
+			items = {}
+			productCursor.execute("SELECT ProductLink,ProductName, InStock FROM products WHERE PostID = %s", str(i["PostID"]))
+			productresult = productCursor.fetchall()
+			imageCursor.execute("SELECT ImageLink FROM images WHERE PostID = %s", str(i["PostID"]))
+			imageresult = imageCursor.fetchall()
+			for i in range(0, len(productresult)):
+				items['image'] = imageresult[i]['ImageLink']
+				items['link'] = productresult[i]['ProductLink']
+				items['title'] = productresult[i]['ProductName']
+				items['status'] = productresult[i]['InStock']
+			product.append(items)
+		result[0]['product'] = product
+		result[0]['description'] = result[0].pop('Description')
+		result[0]['curator'] = result[0].pop('Curator')
+		result[0]['title'] = result[0].pop('Title')
+		result[0].pop('PostID')
+		return result[0]
 
 def get_curator_posts(curator):
 	connection = pymysql.connect(host=str(os.environ.get("HOST")),
@@ -148,10 +195,25 @@ def search_products(product_substring):
 								 database=str(os.environ.get('PRODUCT_DATABASE')),
 	                             charset='utf8mb4',
 	                             cursorclass=pymysql.cursors.DictCursor)
-    with postConnection.cursor() as cursor:
-        cursor.execute("SELECT IF(INSTR(ProductName, %s), POSTID, 0) FROM products")
-        result = cursor.fetchall()
-        print(result.json())
+    imageConnection = pymysql.connect(host=str(os.environ.get("HOST")),
+	                             user=str(os.environ.get("USER")),
+	                             password=str(os.environ.get("PASSWORD")),
+								 port=int(os.environ.get("PORT")),
+								 database=str(os.environ.get('IMAGE_DATABASE')),
+	                             charset='utf8mb4',
+	                             cursorclass=pymysql.cursors.DictCursor)
+    with productConnection.cursor() as cursor:
+		cursor.execute("SELECT PostID, ProductName, ProductLink FROM products WHERE INSTR(ProductName, %s) > 0", str(product_substring))
+		productConnection.commit()
+		result = cursor.fetchall()
+		productConnection.close()
+		imageCursor = imageConnection.cursor()
+		for i in result:
+			imageCursor.execute("SELECT ImageLink FROM images WHERE PostID = %s", str(i["PostID"]));
+			imageConnection.commit()
+			imageresult = imageCursor.fetchall()
+			i['ImageLink'] = imageresult[0]['ImageLink']
+		return json.dumps(result)
 
 def create_post(curator, date, title, description, inStock,sizes, productLink, productName, imageLink, imageName):
 	postConnection = pymysql.connect(host=str(os.environ.get("HOST")),

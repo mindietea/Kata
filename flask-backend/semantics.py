@@ -28,7 +28,7 @@ def get_recommendations(name, brand=None):
         data = {}
         data['image'] = r["images"][0]
         data['url'] = r['sitedetails'][0]["url"]
-    
+
         try:
             data['price'] = r['sitedetails'][0]["latestoffers"][0]["price"]
         except:
@@ -37,4 +37,3 @@ def get_recommendations(name, brand=None):
         data['name'] = r['name']
         output.append(data)
     return {"results": output}
-

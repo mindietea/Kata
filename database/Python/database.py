@@ -151,7 +151,7 @@ def create_post(curator, date, title, description, inStock,sizes, productLink, p
 	                             charset='utf8mb4',
 	                             cursorclass=pymysql.cursors.DictCursor)
 	with postConnection.cursor() as cursor:
-		cursor.execute("INSERT INTO posts (Curator, Date, Title, Description, InStock, sizes) VALUES  (%s, %s, %s, %s, %s, %s);", (curator, date, title, description, inStock, sizes))
+		cursor.execute("INSERT INTO posts (Curator, Date, Title, Description, ) VALUES  (%s, %s, %s, %s, %s, %s);", (curator, date, title, description, inStock, sizes))
 		postConnection.commit()
 		cursor.execute("SELECT * FROM posts WHERE curator = %s;", curator);
 		postConnection.commit()
@@ -161,7 +161,7 @@ def create_post(curator, date, title, description, inStock,sizes, productLink, p
 		imageCursor.execute("INSERT INTO images (PostID, ImageLink, ImageName) VALUES (%s, %s, %s)", (currentID, imageLink, imageName))
 		imageConnection.commit()
 		productCursor = productConnection.cursor()
-		productCursor.execute("INSERT INTO products (PostID, ProductLink, ProductName) VALUES (%s, %s, %s)", (currentID, productLink, productName))
+		productCursor.execute("INSERT INTO products (PostID, ProductLink, ProductName, InStock) VALUES (%s, %s, %s, %s)", (currentID, productLink, productName, inStock))
 		productConnection.commit()
 
 
@@ -197,8 +197,8 @@ def create_post_array(curator, date, title, description, product):
 		imageCursor = imageConnection.cursor()
 		productCursor = productConnection.cursor()
 		for i in product:
-			imageCursor.execute("INSERT INTO images (PostID, ImageLink, ImageName, InStock) VALUES (%s, %s, %s, %s)", (currentID, product[i]['image'], product[i]['title'], product[i]['status']))
-			productCursor.execute("INSERT INTO products (PostID, ProductLink, ProductName) VALUES (%s, %s, %s)", (currentID, product[i][link], product[i]['title']))
+			imageCursor.execute("INSERT INTO images (PostID, ImageLink, ImageName) VALUES (%s, %s, %s)", (currentID, product[i]['image'], product[i]['title']))
+			productCursor.execute("INSERT INTO products (PostID, ProductLink, ProductName, InStock) VALUES (%s, %s, %s, %s)", (currentID, product[i][link], product[i]['title'], product[i]['status']))
 		imageConnection.commit()
 		productConnection.commit()
 

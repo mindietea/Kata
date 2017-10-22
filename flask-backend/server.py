@@ -71,7 +71,7 @@ def create_post():
     product_name = body["product_name"]
     image_link = body["image"]
     image_name = body["image_name"]
-    database.create_post(curator, date, title, desc, in_stock, sizes, product_link, product_name, image_link, image_name)
+    database.create_post(curator, date, title, desc, product_link, product_name, image_link, image_name)
     return(json.dumps({"status": 200}))
 
 @app.route("/api/post/create_json", methods=['POST'])

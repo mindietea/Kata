@@ -17,7 +17,7 @@ connection.connect(function(err) {
   }
 
   console.log('Connected to database.');
-  var query = "CREATE TABLE products (PostID int, ProductLink varchar(255), ProductName varchar(255));"
+  var query = "CREATE TABLE products (PostID int, ProductLink varchar(255), ProductName varchar(255), InStock ENUM('false', 'true'), sizes varchar(500));"
   console.log("running query \"" + query + "\"...");
   connection.query(query);
   connection.end()

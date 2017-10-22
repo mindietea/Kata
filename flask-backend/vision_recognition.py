@@ -23,10 +23,9 @@ def custom_vision_endpoint(user_image_url):
     response = requests.post(url, data=json.dumps(payload), headers=headers)
     response = response.json()
     # if custom model has high probability rate, return recommendations
-    if response['Predictions'][0]['Probability'] > 1.75:
+    if response['Predictions'][0]['Probability'] > 0.75:
         val = response['Predictions'][0]['Tag']
-        print(val)
-        return semantics.get_recommendations(val)
+        return json.dumps(semantics.get_recommendations(val), False)
     # call clarifai api otherwise
     else:
         k = keys.Keys()
@@ -37,8 +36,15 @@ def custom_vision_endpoint(user_image_url):
         result= model.predict([image])
         concepts = result['outputs'][0]['data']['concepts']
         # check for high confidence
-        if concepts[0]['value'] >= .9:
+        if concepts[0]['value'] >= 0.9:
             val = concepts[0]['name']
-            return semantics.get_recommendations(val)
+            return json.dumps(semantics.get_recommendations(val), False)
+
+        # otherwise provide the user with choice
+        response = {}
+        response['data'] = []
+        for i in range(5):
+            response['data'].append(concepts[i]['name'])
+        return json.dumps(response, True)
 
 custom_vision_endpoint("http://www.shadestation.co.uk/media/thumbs/800x800/media/product_images/Rayban-Glasses-RX5227-2034afw800fh800.png")

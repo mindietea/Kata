@@ -1,14 +1,14 @@
-from semantics3 import Products, Categories
+from semantics3 import Products
 import keys
 import json
 
 def get_recommendations(name, brand=None):
     k = keys.Keys()
 
-    categories = Categories(
-        api_key = k.get_semantics_api_key(),
-        api_secret = k.get_semantics_secret_key()
-    )
+#    categories = Categories(
+ #       api_key = k.get_semantics_api_key(),
+  #      api_secret = k.get_semantics_secret_key()
+  #  )
 
     products = Products(
         api_key = k.get_semantics_api_key(),
@@ -25,16 +25,15 @@ def get_recommendations(name, brand=None):
     output = []
 
     for r in results["results"]:
+        print(r)
         data = {}
         data['image'] = r["images"][0]
         data['url'] = r['sitedetails'][0]["url"]
-    
         try:
             data['price'] = r['sitedetails'][0]["latestoffers"][0]["price"]
+            data['brand'] = r['brand']
         except:
-            pass
-        data['brand'] = r['brand']
+            pass        
         data['name'] = r['name']
         output.append(data)
     return {"results": output}
-

@@ -18,7 +18,11 @@ def get_post(post_id):
     post_info = database.get_post(post_id)
     product_info = database.get_product(post_id)
     image_info = database.get_image(post_id)
-    return "test"
+    result = json.loads(post_info)
+    result[0]["products"] = product_info
+    result[0]["images"] = image_info
+    print(str(result[0]))
+    return json.dumps(result[0])
 
 
 @app.route("/api/post/recommendations")
@@ -29,7 +33,11 @@ def get_recommendations():
 
 @app.route("/api/curator/<curator_id>/posts")
 def get_curator_posts(curator_id):
-    return database.get_curator_posts(curator_id)
+    post_ids = database.get_curator_post_ids(curator_id)
+    curator_posts = []
+    for id in post_ids:
+        curator_posts.append(get_post(id))
+    return json.dumps({"posts": curator_posts})
 
 @app.route("/api/post/create", methods=['POST'])
 def create_post():
@@ -45,7 +53,8 @@ def create_post():
     product_name = body["product_name"]
     image_link = body["image"]
     image_name = body["image_name"]
-    return database.create_post(curator, date, title, desc, in_stock, sizes, product_link, product_name, image_link, image_name)
+    database.create_post(curator, date, title, desc, in_stock, sizes, product_link, product_name, image_link, image_name)
+    return(json.dumps({"status": 200}))
 
 @app.route("/api/post/create_json", methods=['POST'])
 def create_custom_json():

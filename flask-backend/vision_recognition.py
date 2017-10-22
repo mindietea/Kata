@@ -12,7 +12,7 @@ def custom_vision_endpoint(user_image_url):
 
     payload = {
       #  "Url": user_image_url
-        "Url": "http://www.shadestation.co.uk/media/thumbs/800x800/media/product_images/Rayban-Glasses-RX5227-2034afw800fh800.png"
+        "Url": user_image_url
     }
     headers = {
         "Content-Type": "application/json",
@@ -46,5 +46,3 @@ def custom_vision_endpoint(user_image_url):
         for i in range(5):
             response['data'].append(concepts[i]['name'])
         return json.dumps(response, True)
-
-custom_vision_endpoint("http://www.shadestation.co.uk/media/thumbs/800x800/media/product_images/Rayban-Glasses-RX5227-2034afw800fh800.png")

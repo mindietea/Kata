@@ -45,8 +45,11 @@ def get_recommendations():
 
 @app.route("/api/post/vision", methods=['POST'])
 def get_vision_results():
-    image_url = str(request.form['url'])
-    return json.dumps(json.loads(vision_recognition.custom_vision_endpoint(image_url)))
+    body = request.get_json(force=True)
+    image_url = str(body['url'])
+    response = flask.jsonify(json.loads(vision_recognition.custom_vision_endpoint(image_url)))
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 @app.route("/api/curator/<curator_id>/posts")
 def get_curator_posts(curator_id):

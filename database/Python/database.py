@@ -140,6 +140,19 @@ def get_product(postID):
 		connection.close()
 		return json.dumps(result)
 
+def search_products(product_substring):
+    productConnection = pymysql.connect(host=str(os.environ.get("HOST")),
+	                             user=str(os.environ.get("USER")),
+	                             password=str(os.environ.get("PASSWORD")),
+								 port=int(os.environ.get("PORT")),
+								 database=str(os.environ.get('PRODUCT_DATABASE')),
+	                             charset='utf8mb4',
+	                             cursorclass=pymysql.cursors.DictCursor)
+    with postConnection.cursor() as cursor:
+        cursor.execute("SELECT IF(INSTR(ProductName, %s), POSTID, 0) FROM products")
+        result = cursor.fetchall()
+        print(result.json())
+
 def create_post(curator, date, title, description, inStock,sizes, productLink, productName, imageLink, imageName):
 	postConnection = pymysql.connect(host=str(os.environ.get("HOST")),
 	                             user=str(os.environ.get("USER")),

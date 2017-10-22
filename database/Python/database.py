@@ -67,6 +67,36 @@ def get_post(postID):
 		connection.close()
 		return json.dumps(result)
 
+def get_influencers(curator_id):
+    connection = pymysql.connect(   host=str(os.environ.get("HOST")),
+                                    user=str(os.environ.get("USER")),
+                                    password=str(os.environ.get("PASSWORD")),
+                                    port = int(os.environ.get("PORT")),
+                                    database=str(os.environ.get("FOLLOWERS_DATABASE")),
+                                    charset='utf8mb4',
+                                    cursorclass=pymysql.cursors.DictCursor)
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM Followers WHERE Follower= %s".str(curator_id))
+        connection.commit()
+        result = cursor.fetchall()
+        connection.close()
+        return json.dumps(result)
+
+def get_followers(curator_id):
+    connection = pymysql.connect(   host=str(os.environ.get("HOST")),
+                                    user=str(os.environ.get("USER")),
+                                    password=str(os.environ.get("PASSWORD")),
+                                    port = int(os.environ.get("PORT")),
+                                    database=str(os.environ.get("FOLLOWERS_DATABASE")),
+                                    charset='utf8mb4',
+                                    cursorclass=pymysql.cursors.DictCursor)
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM Followers WHERE User= %s".str(curator_id))
+        connection.commit()
+        result = cursor.fetchall()
+        connection.close()
+        return json.dumps(result)
+
 
 def get_image(postID):
 	connection = pymysql.connect(host=str(os.environ.get("HOST")),
@@ -171,3 +201,4 @@ def create_post_array(curator, date, title, description, product):
 			productCursor.execute("INSERT INTO products (PostID, ProductLink, ProductName) VALUES (%s, %s, %s)", (currentID, product[i][link], product[i]['title']))
 		imageConnection.commit()
 		productConnection.commit()
+

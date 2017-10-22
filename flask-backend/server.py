@@ -40,9 +40,14 @@ def get_curator_posts(curator_id):
     return json.dumps({"posts": curator_posts})
 
 @app.route("/api/curator/<curator_id>/following")
-def get_following_curators(curator_id):
+def get_followed_curators(curator_id):
     following_ids = database.get_influencers(curator_id)
     return json.dumps({"ids": following_ids})
+
+@app.route("/api/curator/<curator_id>/followers")
+def get_following_curators(curator_id):
+    follower_ids = database.get_followers(curator_id)
+    return json.dumps({"ids": follower_ids})
 
 @app.route("/api/curator/<curator_id>/feed")
 def get_feed(curator_id):
@@ -61,7 +66,8 @@ def create_post():
     curator = body["curator"]
     date = body["date"]
     title = body["title"]
-    desc = body["description"] in_stock = body["in_stock"]
+    desc = body["description"]
+    in_stock = body["in_stock"]
     sizes = body["sizes"]
     product_link = body["product_link"]
     product_name = body["product_name"]

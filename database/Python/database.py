@@ -97,6 +97,18 @@ def get_followers(curator_id):
         connection.close()
         return json.dumps(result)
 
+def add_follower(curator_id, current_user):
+    connection = pymysql.connect(   host=str(os.environ.get("HOST")),
+                                    user=str(os.environ.get("USER")),
+                                    password=str(os.environ.get("PASSWORD")),
+                                    port = int(os.environ.get("PORT")),
+                                    database=str(os.environ.get("FOLLOWERS_DATABASE")),
+                                    charset='utf8mb4',
+                                    cursorclass=pymysql.cursors.DictCursor)
+    with connection.cursor() as cursor:
+		cursor.execute("INSERT INTO followers (User, Follower) VALUES (%s, %s)", (curator_id, current_user))
+		connection.commit()
+		connection.close()
 
 def get_image(postID):
 	connection = pymysql.connect(host=str(os.environ.get("HOST")),

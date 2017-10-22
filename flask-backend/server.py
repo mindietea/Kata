@@ -36,8 +36,8 @@ def get_curator_posts(curator_id):
     post_ids = database.get_curator_post_ids(curator_id)
     curator_posts = []
     for post_id in post_ids:
-        curator_posts.append(get_post(post_id))
-    return json.dumps({"posts": curator_posts})
+        curator_posts.append(json.loads(get_post(post_id)))
+    return json.dumps(curator_posts)
 
 @app.route("/api/curator/<curator_id>/following")
 def get_followed_curators(curator_id):
@@ -58,7 +58,7 @@ def get_feed(curator_id):
     for curator in following:
         post_ids = database.get_curator_post_ids(curator["User"])
         for post_id in post_ids:
-            feed.append(get_post(post_id))
+            feed.append(json.loads(get_post(post_id)))
     return json.dumps({"feed": feed})
 
 @app.route("/api/post/create", methods=['POST'])
@@ -82,7 +82,13 @@ def create_post():
 def create_custom_json():
     raw_data = request.get_json()
     database.create_post_array(raw_data['curator'], None, raw_data['title'], raw_data['description'], raw_data['products'])
-	return(json.dumps({"status": 200}))
+    return(json.dumps({"status": 200}))
+
+@app.route("/api/post/add_follower", methods=['POST'])
+def create_followers():
+    body = request.get_json(force=True)
+    database.add_follower(body["User"], body["Follower"])
+    return(json.dumps({"status": 200}))
 '''
 {
     curator: 0,

@@ -91,7 +91,7 @@ def get_followers(curator_id):
                                     charset='utf8mb4',
                                     cursorclass=pymysql.cursors.DictCursor)
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM Followers WHERE User= %s".str(curator_id))
+        cursor.execute("SELECT * FROM Followers WHERE User= %s",str(curator_id))
         connection.commit()
         result = cursor.fetchall()
         connection.close()
